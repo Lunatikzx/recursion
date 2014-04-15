@@ -42,27 +42,26 @@
             
             $mom = $human->getMom();
             $dad = $human->getDad();
-            
+            if ($human == null){
+                $parent .= self::html_parse($human->getName());
+            }
+
             if ( $mom != null){
-                $childs.= self::html_child((string)$mom->getName());
+                $childs.= self::html_parse((string)$mom->getName());
                 $childs.= $human->get_f_tree($mom);
             } 
 
             if ( $dad != null){
-                $childs.= self::html_child((string)$dad->getName());
+                $childs.= self::html_parse((string)$dad->getName());
                 $childs.= $human->get_f_tree($dad);
             }
 
-            $parent .= self::html_parent($childs);
+            $parent .= self::html_parse($childs);
             return $parent;
         }
 
-        public static function html_child($content){
-            return "<li>".$content."</li>";
-        }
-
-        public static function html_parent($content){
-            return "<ul>".$content."</ul>";
+        public static function html_parse($content){
+            return "<ul><li>".$content."</li></ul>";
         }
 
     }
