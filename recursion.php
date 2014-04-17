@@ -34,37 +34,48 @@
         public function getMom() {
             return $this->_mom;
         }
-
-        public function get_f_tree(Human $human = null){
+        
+        public function get_f_tree(Human $humans = null){
             $childs = null; 
             $parent = null;
-            $human = $human == null ? $this : $human;
-            
+            $human = $humans == null ? $this : $humans;
+
             $mom = $human->getMom();
             $dad = $human->getDad();
-            if ($human == null){
-                $parent .= self::html_parse($human->getName());
+
+            $parent.="<ul>";
+            
+            $parent .= self::html_parse($human->getName(), false);
+            if ($mom !== null || $dad != null ){
+                // $parent.="<ul>";
+            
+                if ( $mom != null){
+                    $childs.= self::html_parse("mom".$mom->getName(), false);
+                    $childs.= $human->get_f_tree($mom);
+                } 
+
+                if ( $dad != null){
+                    $childs.= self::html_parse("dad".$dad->getName(), false);
+                    $childs.= $human->get_f_tree($dad);
+                }
             }
-
-            if ( $mom != null){
-                $childs.= self::html_parse((string)$mom->getName());
-                $childs.= $human->get_f_tree($mom);
-            } 
-
-            if ( $dad != null){
-                $childs.= self::html_parse((string)$dad->getName());
-                $childs.= $human->get_f_tree($dad);
-            }
-
             $parent .= self::html_parse($childs);
+            
+            $parent.="</ul>";
             return $parent;
         }
 
-        public static function html_parse($content){
-            return "<ul><li>".$content."</li></ul>";
+        public static function html_parse($content, $isParent = true){
+            if($isParent){
+                $content = "<ul>".$content."</ul>";
+            } else {
+                $content = "<li>".$content."</li>";
+            }
+            return $content;
         }
 
     }
+
 
     $adam = new Human('Adam'); 
     $eve  = new Human('Eve', $adam); 
