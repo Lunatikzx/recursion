@@ -36,7 +36,6 @@
         }
         
         public function get_f_tree(Human $humans = null){
-            $childs = null; 
             $parent = null;
             $human = $humans == null ? $this : $humans;
 
@@ -45,33 +44,22 @@
 
             $parent.="<ul>";
             
-            $parent .= self::html_parse($human->getName(), false);
-            if ($mom !== null || $dad != null ){
-                // $parent.="<ul>";
+            $parent .= "<li>".$human->getName()."</li>";
+            if (!is_null($mom) || !is_null($dad) ){
+                $parent.="<li>";
             
-                if ( $mom != null){
-                    $childs.= self::html_parse("mom".$mom->getName(), false);
-                    $childs.= $human->get_f_tree($mom);
+                if (!is_null($mom)){
+                    $parent.= $human->get_f_tree($mom);
                 } 
+                if (!is_null($dad)){
+                    $parent.= $human->get_f_tree($dad);
+                } 
+                $parent.="</li>";
 
-                if ( $dad != null){
-                    $childs.= self::html_parse("dad".$dad->getName(), false);
-                    $childs.= $human->get_f_tree($dad);
-                }
             }
-            $parent .= self::html_parse($childs);
-            
+
             $parent.="</ul>";
             return $parent;
-        }
-
-        public static function html_parse($content, $isParent = true){
-            if($isParent){
-                $content = "<ul>".$content."</ul>";
-            } else {
-                $content = "<li>".$content."</li>";
-            }
-            return $content;
         }
 
     }
