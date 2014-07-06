@@ -7,4 +7,4 @@ Given to me a s a test in an interview I didnt liked the solution I proposed, th
 
 I then took on me to redo the challenge and upgrade the given solution. 
 
-Then i ate some apples
+
